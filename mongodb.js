@@ -14,7 +14,10 @@ const connectionURL = 'mongodb://127.0.0.1:27017'
 const databaseName = 'task-manager'
 
 const id = new ObjectID()
-console.log(id) 
+console.log(id.id.length) 
+console.log(id.toHexString().length)
+
+
 
 MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) => {
     if (error) {
@@ -25,17 +28,17 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
 
 
     //insert one
-    /* db.collection('users').insertOne({
+   /*  db.collection('users').insertOne({
         name: 'Joao',
-        age: 27
+        age: 26
     }, (error, result) => {
         if(error){
             return console.log('Something went wrong')
         }
 
         console.log(result.ops)  //   . ops ->  array of document inside
-    }) */
-
+    })
+ */
     //insert many 
 
    /*  db.collection('users2').insertMany([
