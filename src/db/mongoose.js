@@ -26,3 +26,26 @@ me.save().then((result) => {
 }).catch((error) => {
     console.log(error)
 })
+
+
+
+
+const Task = mongoose.model('Tasks', {
+    description: {
+        type: String
+    },
+    completed: {
+        type: Boolean
+    }
+})
+
+const firstTask = new Task({
+    description: 'Sleep',
+    completed: false
+})
+
+firstTask.save().then((result)=> {
+    console.log(result)
+}).catch((error) => {
+    console.log(error)
+})
