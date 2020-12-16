@@ -27,33 +27,13 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
     const db = client.db(databaseName)
 
 
-
-    /* db.collection('users2').updateOne({
-        _id: new ObjectID("5fd9f0f8bca22e2a2c45fe4f"), 
-    }, {
-        $inc: {
-            age: 1
-        }
-    }).then((result) => {
-        console.log(result)
-    }).catch((error)=> {
-        console.log(error)
-    }) */
-
-
-    db.collection('task_manager').updateMany({
-        done: false
-    }, {
-        $set: {
-            done: true
-        }
+    db.collection('task_manager').deleteMany({
+        done: true
     }).then((result) => {
         console.log(result)
     }).catch((error) => {
         console.log(error)
     })
-
-
 
 })
 
@@ -133,4 +113,33 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
 
     db.collection('users').find({ name: 'Joao' }).count((error, count) => {
         console.log(count)
+    }) */
+
+
+    //update one and many example  
+
+
+    /* db.collection('users2').updateOne({
+        _id: new ObjectID("5fd9f0f8bca22e2a2c45fe4f"), 
+    }, {
+        $inc: {
+            age: 1
+        }
+    }).then((result) => {
+        console.log(result)
+    }).catch((error)=> {
+        console.log(error)
+    }) */
+
+
+   /*  db.collection('task_manager').updateMany({
+        done: false
+    }, {
+        $set: {
+            done: true
+        }
+    }).then((result) => {
+        console.log(result)
+    }).catch((error) => {
+        console.log(error)
     }) */
