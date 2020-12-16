@@ -13,9 +13,9 @@ const { MongoClient, ObjectID} = require('mongodb')
 const connectionURL = 'mongodb://127.0.0.1:27017'
 const databaseName = 'task-manager'
 
-const id = new ObjectID()
-console.log(id.id.length) 
-console.log(id.toHexString().length)
+//const id = new ObjectID()
+//console.log(id.id.length) 
+//console.log(id.toHexString().length)
 
 
 
@@ -27,8 +27,42 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
     const db = client.db(databaseName)
 
 
-    //insert one
-   /*  db.collection('users').insertOne({
+   // find one and the first
+    db.collection('users').findOne({name: 'Joao'}, (error, user) => {
+        if (error) {
+            return console.log('Something went bad')
+        }
+
+        console.log(user)
+    })
+ 
+    //find all docs
+    db.collection('users').find({ name: 'Joao' }).toArray((error, users) => {
+        console.log(users)
+    })
+
+    db.collection('users').find({ name: 'Joao' }).count((error, count) => {
+        console.log(count)
+    })
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ /*   //insert one
+    db.collection('users').insertOne({
         name: 'Joao',
         age: 26
     }, (error, result) => {
@@ -38,10 +72,10 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
 
         console.log(result.ops)  //   . ops ->  array of document inside
     })
- */
+ 
     //insert many 
 
-   /*  db.collection('users2').insertMany([
+    db.collection('users2').insertMany([
         {
             name: 'Jen',
             age: 22, 
@@ -55,11 +89,11 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
         }
 
         console.log(result.ops)
-    }) */
+    })
 
     //testing with task manager example
 
-    /* db.collection('task_manager').insertMany([
+     db.collection('task_manager').insertMany([
         {
             task: 'study Node.js',
             done: true
@@ -74,4 +108,3 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
 
         console.log(result.ops)
     }) */
-})
