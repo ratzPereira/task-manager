@@ -27,28 +27,35 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
     const db = client.db(databaseName)
 
 
-   // find one and the first
-    db.collection('users').findOne({name: 'Joao'}, (error, user) => {
-        if (error) {
-            return console.log('Something went bad')
+
+    /* db.collection('users2').updateOne({
+        _id: new ObjectID("5fd9f0f8bca22e2a2c45fe4f"), 
+    }, {
+        $inc: {
+            age: 1
         }
+    }).then((result) => {
+        console.log(result)
+    }).catch((error)=> {
+        console.log(error)
+    }) */
 
-        console.log(user)
-    })
- 
-    //find all docs
-    db.collection('users').find({ name: 'Joao' }).toArray((error, users) => {
-        console.log(users)
+
+    db.collection('task_manager').updateMany({
+        done: false
+    }, {
+        $set: {
+            done: true
+        }
+    }).then((result) => {
+        console.log(result)
+    }).catch((error) => {
+        console.log(error)
     })
 
-    db.collection('users').find({ name: 'Joao' }).count((error, count) => {
-        console.log(count)
-    })
+
+
 })
-
-
-
-
 
 
 
@@ -107,4 +114,23 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
         }
 
         console.log(result.ops)
+    }) */
+
+
+    /* // find one and the first
+    db.collection('users').findOne({name: 'Joao'}, (error, user) => {
+        if (error) {
+            return console.log('Something went bad')
+        }
+
+        console.log(user)
+    }) */
+ 
+    /* //find all docs
+    db.collection('users').find({ name: 'Joao' }).toArray((error, users) => {
+        console.log(users)
+    })
+
+    db.collection('users').find({ name: 'Joao' }).count((error, count) => {
+        console.log(count)
     }) */
