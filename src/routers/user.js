@@ -1,5 +1,6 @@
 const express = require('express')
 const User = require('../models/user')
+const auth = require('../middleware/auth')
 const router = new express.Router()
 
 
@@ -32,14 +33,8 @@ router.post('/users/login', async (req, res) => {
 })
 
 
-router.get('/users', async (req, res) => {
-
-    try {
-        const users = await User.find({})    //will fetch all
-        res.send(users)
-    } catch (error) {
-        res.status(500).send()
-    }
+router.get('/users/me', auth, async (req, res) => {
+    res.send(req.user)  // the middleware already has the user that is logged in. we just need to send it back. its own profile
 })
 
 router.get('/users/:id', async (req, res) => {

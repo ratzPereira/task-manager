@@ -10,10 +10,25 @@ const taskRouter = require('./routers/task')
 const app = express()
 const port = process.env.PORT || 4000
 
+
+//middleware example \/
+
+/* app.use((req, res, next) => {
+    res.status(503).send('The server is in maintenance')
+}) */
+
+
 app.use(express.json()) // automatic parse json in object
 app.use(userRouter)
 app.use(taskRouter)
 
+
+//
+//  Without middleware: new request -> run route handler
+//
+//
+//  with middleware: new request -> do something -> run route handler
+//
 
 
 app.listen(port, () => {
