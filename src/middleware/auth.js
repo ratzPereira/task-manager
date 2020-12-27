@@ -12,7 +12,8 @@ const auth = async (req, res, next) => {
             throw new Error()
         }
 
-        req.user = user
+        req.token = token  //this particular token
+        req.user = user     //this particular user
         next()
     } catch (error) {
         res.status(401).send({error: 'Please loggin first!'})

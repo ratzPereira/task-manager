@@ -32,6 +32,34 @@ router.post('/users/login', async (req, res) => {
     }
 })
 
+//logout current token
+router.post('/users/logout', auth, async (req, res) => {
+    try {
+        req.user.tokens = req.user.tokens.filter((token) => {
+            return token.token !== req.token
+        })
+        await req.user.save()
+
+        res.send()
+    } catch (error) {
+        res.status(500).send()
+    }
+})
+
+//logout in every devices (clean all tokens)
+router.post('/users/logoutALL', auth, async (req, res) => {
+    try {
+        
+        req.user.tokens = []
+        await req.user.save()
+
+        res.send()
+
+    } catch (error) {
+        res.status(500).send()
+    }
+})
+
 
 router.get('/users/me', auth, async (req, res) => {
     res.send(req.user)  // the middleware already has the user that is logged in. we just need to send it back. its own profile
