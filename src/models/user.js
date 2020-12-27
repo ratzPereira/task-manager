@@ -50,6 +50,16 @@ const userSchema = new mongoose.Schema({
     }]
 })
 
+userSchema.methods.toJSON = function () {   //toJSON -> 
+    const user = this
+    const userObject = user.toObject()
+
+    delete userObject.password  //will delete the password field that is sending back
+    delete userObject.tokens //will delete the tokens array field that is sending back
+
+    return userObject
+}
+
 
 userSchema.methods.generateAuthToken = async function () {   //.methods -> instance methods
     const user = this
