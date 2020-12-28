@@ -21,15 +21,26 @@ try {
 }
 })
 
-
+//GET /tasks?completed=true
 router.get('/tasks', auth, async (req, res) => {
+
+    const match = {}
+
+    if (req.query.completed) {
+        match.completed = req.query.completed === 'true'   //we get a string comming from req. we want one boolean
+    }
 
 try {
     //const tasks = await Task.find({owner: req.user._id}) // prcurar todas as task do user que está autenticado
 
 
     //  \/ another approach
-    await req.user.populate('tasks').execPopulate() //will fetch and populate the user tasks
+    await req.user.populate({
+        path: 'tasks',
+        match
+    }).execPopulate() //will fetch and populate the user tasks
+
+
     res.send(req.user.tasks)
 } catch (error) {
     res.status(500).send()
