@@ -50,6 +50,13 @@ const userSchema = new mongoose.Schema({
     }]
 })
 
+userSchema.virtual('tasks', {                      //mongoose to figure out how these two things are related
+    ref: 'Task',
+    localField: '_id',    // in the task model we have owner ID and in user model we have the ID. its the field that those entities share
+    foreignField: 'owner'   // relação entre Task e owner, em k o field comum é o _id
+})           
+
+
 userSchema.methods.toJSON = function () {   //toJSON -> 
     const user = this
     const userObject = user.toObject()

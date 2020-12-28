@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
+const User = require('./user')
 
 const taskSchema = new mongoose.Schema({
     description: {
@@ -10,6 +11,11 @@ const taskSchema = new mongoose.Schema({
     completed: {
         type: Boolean,
         default: false
+    },
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User'   //reference to mongoose. set a relationship between user and tasks
     }
 })
 
