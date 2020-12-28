@@ -49,6 +49,8 @@ const userSchema = new mongoose.Schema({
             required: true
         }
     }]
+}, {     //this second object as argument is the schema options
+    timestamps: true
 })
 
 userSchema.virtual('tasks', {                      //mongoose to figure out how these two things are related
