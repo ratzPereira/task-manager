@@ -23,12 +23,23 @@ try {
 
 //GET /tasks?completed=true
 //GET /tasks?limit=10&skip=0
+//GET /tasks?sortBy=createdAt:asc
+///tasks?sortBy=createdAt:asc&completed=true
 router.get('/tasks', auth, async (req, res) => {
 
     const match = {}
+    const sort = {}   //we create one empty object so we can costumize this
+
+
 
     if (req.query.completed) {
         match.completed = req.query.completed === 'true'   //we get a string comming from req. we want one boolean
+    }
+
+    if (req.query.sortBy) {
+        const parts = req.query.sortBy.split(':')
+        sort[parts[0]] = parts[1] === 'desc' ? -1 : 1 //grabbing the fist item in the parts array and using it as the name of the property, then
+        //we check via ternary if the given value is desc or asc and set that to 1 or -1
     }
 
 try {
@@ -41,7 +52,8 @@ try {
         match,
         options: {
             limit: parseInt(req.query.limit),
-            skip: parseInt(req.query.skip)
+            skip: parseInt(req.query.skip),
+            sort
         }
     }).execPopulate() //will fetch and populate the user tasks
 
