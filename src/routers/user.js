@@ -109,21 +109,36 @@ router.delete('/users/me', auth, async (req, res) => {
 //file uploading
 
 const upload = multer({
-    dest: 'avatar',
+    //dest: 'avatar',  // -> if we wanted to save files in one directory
     limits: {
         fileSize: 1000000
     },
     fileFilter(req, file, cb) {
-        if (!file.originalname.match(/\.(jpg|jpeg)$/)) {          //file.originalname.endsWith('.jpg')  <- we can use this, but .match acept regular expressions, so, why not?
-            return cb(new Error('File must be an image'))
+        if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {          //file.originalname.endsWith('.jpg')  <- we can use this, but .match acept regular expressions, so, why not?
+            return cb(new Error('File must be an image in jpg, jpeg or png'))
         }
         
         cb(undefined, true)
     }
 })
 
-router.post('/users/me/avatar', upload.single('avatar'), (req, res) => {
+
+//add or update users avatar
+router.post('/users/me/avatar', auth, upload.single('avatar'), async (req, res) => {
+    req.user.avatar =  req.file.buffer
+    await req.user.save()
     res.sendStatus(200)
+}, (error, req, res, next) => {   // must be with this 4 arguments so express know that function its for error handling
+    res.status(400).send({error: error.message})
+})
+
+
+//delete users avatar
+router.delete('/users/me/avatar', auth, async (req, res) => {
+    
+    req.user.avatar = undefined
+    await req.user.save()
+    res.send()
 })
 
 
