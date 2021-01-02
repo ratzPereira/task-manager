@@ -3,8 +3,7 @@ const User = require('../models/user')
 const auth = require('../middleware/auth')
 const router = new express.Router()
 const multer = require('multer')
-
-
+const sharp = require('sharp')
 
 
 
@@ -125,7 +124,10 @@ const upload = multer({
 
 //add or update users avatar
 router.post('/users/me/avatar', auth, upload.single('avatar'), async (req, res) => {
-    req.user.avatar =  req.file.buffer
+
+    const buffer= await sharp(req.file.buffer).resize({ width:250, height: 250}).png().toBuffer() // .resize() will resize the img and the .png() will convert all img to png
+
+    req.user.avatar =  buffer
     await req.user.save()
     res.sendStatus(200)
 }, (error, req, res, next) => {   // must be with this 4 arguments so express know that function its for error handling
@@ -151,7 +153,7 @@ router.get('/users/:id/avatar', async (req, res) => {
             throw new Error()
         }
 
-        res.set('Content-Type', 'image/jpg')
+        res.set('Content-Type', 'image/png')
         res.send(user.avatar)
     } catch (error) {
         res.status(404).send()
