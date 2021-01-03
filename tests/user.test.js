@@ -26,20 +26,38 @@ beforeEach( async () => {
 
 
 test('Should sign up a new user', async () => {
-    await request(app).post('/users').send({
+    const response = await request(app).post('/users').send({
         name: "Ratz",
         email: "example@test.com",
         password: "4rt3r2rrwras"
     }).expect(201)
 
+    //Assert that the database was changed correctly
+    const user = await User.findById(response.body.user._id)
+    expect(user).not.toBeNull()
+
+    //Assertions about the response
+    expect(response.body).toMatchObject({
+        user: {
+            name: 'Ratz',
+            email: "example@test.com" 
+        },
+        token: user.tokens[0].token
+    })
+    expect(user.password).not.toBe("4rt3r2rrwras")
+
 })
 
 
 test('Should log in existing user', async () => {
-    await request(app).post('/users/login').send({
+    const response = await request(app).post('/users/login').send({
         email: userOne.email,
         password: userOne.password
     }).expect(200)
+
+    const user = await User.findById(userOneId)
+    expect(response.body.token).toBe(user.tokens[1].token)
+
 })
 
 
@@ -74,6 +92,9 @@ test('Delete user account', async () => {
         .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
         .send()
         .expect(200)
+
+        const user = await User.findById(userOneId)
+        expect(user).toBeNull()
 })
 
 
